@@ -344,7 +344,7 @@ Upon using this tool, it generated a file `scan_unused_objects.txt`which contain
 
 which was the only "UUID" there. Except it wasn't a UUID at all. 
 
-You see, a UUID only contains standard hexadecimal characters (0-9, A-F) and this one had chars like `P`, `R` and `A`. Looks like we finally found the second half of the flag- in the nick of time.
+You see, a UUID only contains standard hexadecimal characters (0-9, A-F) and this one had chars like `P` and `R`. Looks like we finally found the second half of the flag- in the nick of time.
 
 
 ### flagPart2: 
