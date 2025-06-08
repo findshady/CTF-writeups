@@ -1,6 +1,7 @@
-
 tl;dr
-
+* **Analysis of Android app forensics in a linear storyline**  
+* **RC4 encrypted notes recovery from Flutter shared preferences**  
+* **Analysis of Realm database forensics, deleted data recovery, MVCC artifacts, and more**
 
 **Challenge Points** : 944
 **Category** : DFIR
