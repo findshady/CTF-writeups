@@ -275,7 +275,7 @@ To find the second half of the flag, firstly we need to figure out what `realm d
 
 ![Image](https://github.com/user-attachments/assets/acc0fe4d-5a86-467b-9e7d-fce705e87b6f)
 
-This hints towards an app called `Access My Data` (as we previously saw in the same folder as the notes app, as as hinted in the original challenge description), which downloads a certain encrypted `.realm` file, loads it onto memory and decrypts it. 
+This hints towards an app called `Access My Data` (as we previously saw in the same folder as the notes app, and as hinted in the original challenge description), which downloads a certain encrypted `.realm` file, loads it onto memory and decrypts it. 
 
 Now, A Realm file works similarly to a lightweight relational database. It stores data in tables and records, but unlike SQLite, Realm uses its own efficient binary format and object-based data model.
 
