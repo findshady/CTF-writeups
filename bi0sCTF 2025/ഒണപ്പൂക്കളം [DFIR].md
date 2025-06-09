@@ -47,11 +47,12 @@ Since the challenge description mentioned finding his forgotten notes app, we ne
 
 Furthermore, one can also find the folder `com.sp3p3x.notesapp` containing the following folders:
 
-![Image](https://github.com/user-attachments/assets/2f94face-9290-4f28-8190-e9dc9ae29cec)
+![Pasted image 20250609020552](https://github.com/user-attachments/assets/552c4964-eeb2-4c35-bebe-616f9643bcdb)
+
 
 out of which, the most interesting was `app_flutter`, which contained 7 files
 
-![Image](https://github.com/user-attachments/assets/c5d234b8-bdcc-4c1d-9a80-fde314c54b02)
+![Pasted image 20250609020620](https://github.com/user-attachments/assets/767808a1-d10a-4030-8112-5099719bfaa3)
 
 
 Upon further digging, source code for our notes app can be found in the same folder in `com.sp3p3x.notesapp\files\flet\app` as `main.py` containing 
@@ -273,7 +274,8 @@ w311_7h47_p4r7_w45_345y
 
 To find the second half of the flag, firstly we need to figure out what `realm db`file is being mentioned in the description. Upon scouring through the files once again, we came across a screenshot, which was located in a folder called `snapshots`
 
-![Image](https://github.com/user-attachments/assets/acc0fe4d-5a86-467b-9e7d-fce705e87b6f)
+![Pasted image 20250609023148](https://github.com/user-attachments/assets/9650a2c3-3233-4d2d-bd4d-2e6c78689bdb)
+
 
 This hints towards an app called `Access My Data` (as we previously saw in the same folder as the notes app, and as hinted in the original challenge description), which downloads a certain encrypted `.realm` file, loads it onto memory and decrypts it. 
 
@@ -294,7 +296,8 @@ This file had the disassembly of the APK from which we found the two key parts a
 * Link/source : https://github.com/chicken-jockeyy/confidentialdb/raw/refs/heads/main/enc.bin
 * Decryption was using AES ECB mode
 
-![Image](https://github.com/user-attachments/assets/6484c0fa-99e1-4329-9325-99c3a5ca89e6)
+![Pasted image 20250609024816](https://github.com/user-attachments/assets/8416e07e-aca5-4119-a711-468ab5ff718f)
+
 
 Now all we have to do is reverse engineer the logic and we shall have our `decrypted.realm` file. Here's the script it took :
 
@@ -336,11 +339,15 @@ Initially we spent a lot of time trying to `strings` our way through it, but it 
 
 Furthermore, we spent hours researching ways to recover deleted data from a `realm` file and this is a relatively new topic so we could not find anything other than a couple of research papers on it.
 
-We had lost hopes and had accepted our fate- but the CTF got extended by an hour. At this point we thought it was worth giving this another shot. We came across a tool https://github.com/hyuunnn/realm_recover/ and we found hope again.
+At this point, we tried a whole bunch of things for hours on end. 
+* Unallocated Space Carving : Scanned free blocks/slack space for residual data.
+* MVCC Version Comparison : Compared `TreeRootOffset01` (original) vs `TreeRootOffset02` (modified)
+* Schema-Guided Recovery : Focused on `RealmTestClass0`’s string fields
+* Haywire manual Hex/XOR Analysis which included manual inspection of `AAAA` regions and bruting random XOR tests.
 
-Upon using this tool, it generated a file `scan_unused_objects.txt`which contained 
+Nothing showed any signs of recovering a deleted string. We had lost hopes and had accepted our fate- but the CTF got extended by an hour. At this point we thought it was worth giving this another shot. We came across a tool https://github.com/hyuunnn/realm_recover/ and we found hope again.
 
-![Image](https://github.com/user-attachments/assets/292612b9-df7b-4a2f-b103-a009fb606802)
+![image](https://github.com/user-attachments/assets/2573349b-201c-483d-8ed3-1b2f302527c4)
 
 which was the only "UUID" there. Except it wasn't a UUID at all. 
 
