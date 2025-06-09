@@ -323,7 +323,6 @@ This file had the disassembly of the APK from which we found the two key parts a
 * Decryption was using AES ECB mode
 
 Now all we have to do is reverse engineer the logic and we shall have our `decrypted.realm` file. Here's the script it took :
-Now all we have to do is reverse engineer the logic and we shall have our `decrypted.realm` file. Here's the script it took :
 
 ```python
 import requests
