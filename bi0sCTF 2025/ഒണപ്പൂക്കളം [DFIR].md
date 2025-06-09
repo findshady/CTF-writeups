@@ -8,8 +8,11 @@ tl;dr
 * **Analysis of Realm database forensics, deleted data recovery, MVCC artifacts, and more**
 
 **Challenge Points** : 944
+
 **Category** : DFIR
+
 **No. of solves** : 11
+
 **Author** : [sp3p3x](https://x.com/sp3p3x)
 
 ## Description
@@ -289,16 +292,37 @@ In order to recover the string that was deleted from the `realm` file, we had to
 
 Of course we went with the third method. After fixing numerous dependency errors while trying to install it, we finally installed it and it gave us the output folder, containing `main.dart`. 
 
+```bash
+└─$ python3 blutter.py . output
+Dart version: 3.7.2, Snapshot: d91c0e6f35f0eb2e44124e8f42aa44a7, Target: android arm64
+flags: product no-code_comments no-dwarf_stack_traces_mode dedup_instructions no-tsan no-msan arm64 android compressed-pointers
+libapp is loaded at 0x74ed7495f000
+Dart heap at 0x74ec00000000
+Analyzing the application
+Dumping Object Pool
+Generating application assemblies
+Generating Frida script
+
+```
+
+```bash
+┌──(shady㉿LOQ)-[blutter/output/asm/accessmydata]
+└─$ file main.dart
+main.dart: C++ source, Unicode text, UTF-8 text
+```
+
 This file had the disassembly of the APK from which we found the two key parts and the source and logic to build back our `realm` file. We found :
+
+![Pasted image 20250609024816](https://github.com/user-attachments/assets/6b857ab8-3e28-43ef-8861-f198f26a7fca)
+(snippet of asm output)
+
 
 * Key part 1 : `04e0d32be85f3b4`
 * Key part 2 : `7173047a9d6574e5`
 * Link/source : https://github.com/chicken-jockeyy/confidentialdb/raw/refs/heads/main/enc.bin
 * Decryption was using AES ECB mode
 
-![Pasted image 20250609024816](https://github.com/user-attachments/assets/8416e07e-aca5-4119-a711-468ab5ff718f)
-
-
+Now all we have to do is reverse engineer the logic and we shall have our `decrypted.realm` file. Here's the script it took :
 Now all we have to do is reverse engineer the logic and we shall have our `decrypted.realm` file. Here's the script it took :
 
 ```python
@@ -346,6 +370,8 @@ At this point, we tried a whole bunch of things for hours on end.
 * Haywire manual Hex/XOR Analysis which included manual inspection of `AAAA` regions and bruting random XOR tests.
 
 Nothing showed any signs of recovering a deleted string. We had lost hopes and had accepted our fate- but the CTF got extended by an hour. At this point we thought it was worth giving this another shot. We came across a tool https://github.com/hyuunnn/realm_recover/ and we found hope again.
+
+Upon using this tool, it generated a file `scan_unused_objects.txt`which contained 
 
 ![image](https://github.com/user-attachments/assets/2573349b-201c-483d-8ed3-1b2f302527c4)
 
